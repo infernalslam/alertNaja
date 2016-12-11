@@ -19,7 +19,7 @@ app.get('/webhook', function(req, res) {
 var str = ''
 function api (str) {
   console.log(str)
-app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+app.get('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
   console.log(res.data)
 })
 }
