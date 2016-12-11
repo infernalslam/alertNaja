@@ -16,8 +16,15 @@ app.get('/webhook', function(req, res) {
   res.send('Error, wrong token')
 })
 
-
 var str = ''
+function api (str) {
+  console.log(str)
+app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+  console.log(res.data)
+})
+}
+
+
 app.post('/webhook', function (req, res) {
   var data = req.body;
 
@@ -65,11 +72,12 @@ function receivedMessage(event) {
 
   if (messageText) {
     str = messageText
-    app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
-      sendTextMessage(senderID, res.data.name)
-      sendTextMessage(senderID, res.data.weather[0].description)
-      sendTextMessage(senderID, res.data.main.temp)
-    })
+    api(str)
+    // app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+    //   sendTextMessage(senderID, res.data.name)
+    //   sendTextMessage(senderID, res.data.weather[0].description)
+    //   sendTextMessage(senderID, res.data.main.temp)
+    // })
     // if (messageText === 'hello') {
     //   sendTextMessage(senderID, "สวัสดี อยากทราบอุณภูมิจังหวัดไหนว่ามา <3");
     // }
