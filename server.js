@@ -66,7 +66,8 @@ function receivedMessage(event) {
 
   if (messageText) {
     app.get('http://api.openweathermap.org/data/2.5/weather?q=' + messageText + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
-      console.log(res)
+      console.log('req test ' + req.body.messageText)
+      console.log('response is ', res)
       // res.send(res.data)
     })
     // app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
