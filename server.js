@@ -16,6 +16,8 @@ app.get('/webhook', function(req, res) {
   res.send('Error, wrong token')
 })
 
+
+var str = ''
 app.post('/webhook', function (req, res) {
   var data = req.body;
 
@@ -45,14 +47,14 @@ app.post('/webhook', function (req, res) {
     res.sendStatus(200);
   }
 });
-  
+
 function receivedMessage(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:", 
+  console.log("Received message for user %d and page %d at %d with message:",
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
@@ -62,10 +64,15 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-    if (messageText === 'hello') {
-      sendTextMessage(senderID, "ควยเอ้ย ไม่รู้ request");
-    }
-
+    str = messageText
+    app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+      sendTextMessage(senderID, res.data.name)
+      sendTextMessage(senderID, res.data.weather[0].description)
+      sendTextMessage(senderID, res.data.main.temp)
+    })
+    // if (messageText === 'hello') {
+    //   sendTextMessage(senderID, "สวัสดี อยากทราบอุณภูมิจังหวัดไหนว่ามา <3");
+    // }
     // If we receive a text message, check to see if it matches a keyword
     // and send back the example. Otherwise, just echo the text we received.
     switch (messageText) {
@@ -109,14 +116,14 @@ function callSendAPI(messageData) {
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
 
-      console.log("Successfully sent generic message with id %s to recipient %s", 
+      console.log("Successfully sent generic message with id %s to recipient %s",
         messageId, recipientId);
     } else {
       console.error("Unable to send message.");
       console.error(response);
       console.error(error);
     }
-  });  
+  });
 }
 
 app.listen(app.get('port'), function () {
