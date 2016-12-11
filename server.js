@@ -16,13 +16,7 @@ app.get('/webhook', function(req, res) {
   res.send('Error, wrong token')
 })
 
-var str = ''
-function api (str) {
-  console.log('โชว์จังหวัด' + str)
-app.get('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
-  console.log(res.data)
-})
-}
+
 
 
 app.post('/webhook', function (req, res) {
@@ -71,8 +65,10 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-    str = messageText
-    api(str)
+    app.get('http://api.openweathermap.org/data/2.5/weather?q=' + messageText + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+      console.log(res)
+      // res.send(res.data)
+    })
     // app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
     //   sendTextMessage(senderID, res.data.name)
     //   sendTextMessage(senderID, res.data.weather[0].description)
