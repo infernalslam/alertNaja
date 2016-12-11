@@ -16,8 +16,23 @@ app.get('/webhook', function(req, res) {
   res.send('Error, wrong token')
 })
 
+function api (messageText) {
+  console.log(messageText)
+  app.get('http://api.openweathermap.org/data/2.5/weather?q=' + messageText + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+    console.log('req test ' + req.body.messageText)
+    console.log('response is ', res)
+    // res.send(res.data)
+  })
+}
 
-
+apitest()
+function apitest () {
+  console.log("test success")
+  app.get('http://api.openweathermap.org/data/2.5/weather?q=Prachinburi&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
+    console.log('response is ', res)
+    // res.send(res.data)
+  })
+}
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
@@ -35,7 +50,7 @@ app.post('/webhook', function (req, res) {
         if (event.message) {
           receivedMessage(event);
         } else {
-          console.log("Webhook received unknown event: ", event);
+          // console.log("Webhook received unknown event: ", event);
         }
       });
     });
@@ -55,9 +70,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  // console.log("Received message for user %d and page %d at %d with message:",
+    // senderID, recipientID, timeOfMessage);
+  // console.log(JSON.stringify(message));
 
   var messageId = message.mid;
 
@@ -65,11 +80,7 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-    app.get('http://api.openweathermap.org/data/2.5/weather?q=' + messageText + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
-      console.log('req test ' + req.body.messageText)
-      console.log('response is ', res)
-      // res.send(res.data)
-    })
+    api(messageText)
     // app.post('http://api.openweathermap.org/data/2.5/weather?q=' + str + '&APPID=efb29b6eb141f534bfca1523000078ca', function (req, res) {
     //   sendTextMessage(senderID, res.data.name)
     //   sendTextMessage(senderID, res.data.weather[0].description)
@@ -121,12 +132,12 @@ function callSendAPI(messageData) {
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
 
-      console.log("Successfully sent generic message with id %s to recipient %s",
-        messageId, recipientId);
+      // console.log("Successfully sent generic message with id %s to recipient %s",
+        // messageId, recipientId);
     } else {
-      console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
+      // console.error("Unable to send message.");
+      // console.error(response);
+      // console.error(error);
     }
   });
 }
